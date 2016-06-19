@@ -81,7 +81,6 @@ function message(from, to, line) {
   const tag = enums.bind(GameTag);
   const playreq = enums.bind(PlayReq);
   const cmds = { card, find, tag, playreq, [this.nick]: cookie };
-  log('zz', paginate.first, paginate.query);
   Object.keys(cmds).forEach(key => {
     const command = cmds[key];
     const regex = `(!${key}\d?|^${key}:) ?(.*)$`;
