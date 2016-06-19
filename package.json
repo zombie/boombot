@@ -1,0 +1,27 @@
+{
+  "name": "boombot",
+  "version": "0.5.0",
+  "description": "Hearthstone irc bot, resident of #hearthsim on freenode",
+  "config": {
+    "host": "irc.freenode.net",
+    "nick": "boombot",
+    "channels": [
+      "#boombot"
+    ]
+  },
+  "dependencies": {
+    "irc": "^0.5.0",
+    "supervisor": "^0.10.0"
+  },
+  "scripts": {
+    "install": "npm run json",
+    "prejson": "wget -N http://api.hearthstonejson.com/v1/enums.json",
+    "json": "wget -N http://api.hearthstonejson.com/v1/latest/enUS/cards.json",
+    "start": "supervisor ."
+  },
+  "eslintConfig": {
+    "extends": "airbnb"
+  },
+  "repository": "zombie/boombot",
+  "license": "MIT"
+}
