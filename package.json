@@ -15,8 +15,8 @@
   },
   "scripts": {
     "install": "npm run json",
-    "prejson": "wget -N http://api.hearthstonejson.com/v1/enums.json",
-    "json": "wget -N http://api.hearthstonejson.com/v1/latest/enUS/cards.json",
+    "prejson": "wget -N https://api.hearthstonejson.com/v1/enums.json",
+    "json": "wget -N https://api.hearthstonejson.com/v1/latest/enUS/cards.json",
     "start": "supervisor ."
   },
   "eslintConfig": {
