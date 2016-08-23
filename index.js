@@ -2,8 +2,9 @@
 const { Client } = require('irc');
 const { config } = require('./package');
 
-const CARDS = require('./cards');
 const { GameTag, PlayReq, CardType, Rarity } = require('./enums');
+const CARDS = require('./cards');
+const DECKS = require('./decks');
 
 const { log, error } = global.console;
 const [B, I, U, C, N] = '\x02\x1d\x1f\x03\x0f';
@@ -62,6 +63,12 @@ function card(query) {
   return paginate(query, result);
 }
 
+// !deck by card id
+function deck(query) {
+  const exact = new RegExp(`${query}(,|$)`, 'i');
+  return DECKS.filter(d => exact.test(d.cards)).map(d => d.name).join(', ');
+}
+
 // !tag, !playreq enums
 function enums(query) {
   const keys = Object.keys(this);
@@ -80,7 +87,7 @@ function cookie() {
 function message(from, to, line) {
   const tag = enums.bind(GameTag);
   const playreq = enums.bind(PlayReq);
-  const cmds = { card, find, tag, playreq, [this.nick]: cookie };
+  const cmds = { card, find, tag, playreq, deck, [this.nick]: cookie };
   Object.keys(cmds).forEach(key => {
     const command = cmds[key];
     const regex = `(!${key}\d?|^${key}:) ?(.*)$`;
