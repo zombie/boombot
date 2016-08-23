@@ -54,19 +54,24 @@ function find(query) {
   return paginate(query, result);
 }
 
-// !card by name or id
-function card(query) {
+// search by id or name
+function search(query) {
   const exact = new RegExp(`^${query}$`, 'i');
   const fuzzy = new RegExp(query.replace(/ +/g, '.*'), 'i');
   const one = CARDS.filter(c => exact.test(c.id) || exact.test(c.name));
-  const result = one.length ? one : CARDS.filter(c => fuzzy.test(c.name));
-  return paginate(query, result);
+  return one.length ? one : CARDS.filter(c => fuzzy.test(c.name));
+}
+
+// !card by name or id
+function card(query) {
+  return paginate(query, search(query));
 }
 
 // !deck by card id
 function deck(query) {
-  const exact = new RegExp(`${query}(,|$)`, 'i');
-  return DECKS.filter(d => exact.test(d.cards)).map(d => d.name).join(', ');
+  const best = search(query)[0];
+  const decks = DECKS.filter(d => d.cards.includes(best && best.id));
+  return decks.map(d => d.name).join(', ');
 }
 
 // !tag, !playreq enums
@@ -88,6 +93,7 @@ function message(from, to, line) {
   const tag = enums.bind(GameTag);
   const playreq = enums.bind(PlayReq);
   const cmds = { card, find, tag, playreq, deck, [this.nick]: cookie };
+  log('zz', paginate.first, paginate.query);
   Object.keys(cmds).forEach(key => {
     const command = cmds[key];
     const regex = `(!${key}\d?|^${key}:) ?(.*)$`;
